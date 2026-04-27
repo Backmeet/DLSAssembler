@@ -902,3 +902,25 @@ addInstructionDefinition("p1", "0")
 addInstructionDefinition("p2", "1")
 addInstructionDefinition("p3", "2")
 addInstructionDefinition("p4", "3")
+
+
+const copyBtn = document.getElementById("copyBtn")
+const outputBox = document.getElementById("outputBox")
+
+copyBtn.onclick = async () => {
+    try {
+        await navigator.clipboard.writeText(outputBox.value)
+
+        copyBtn.textContent = "Copied"
+        copyBtn.classList.add("copied")
+
+        setTimeout(() => {
+            copyBtn.textContent = "Copy"
+            copyBtn.classList.remove("copied")
+        }, 1200)
+
+    } catch {
+        outputBox.select()
+        document.execCommand("copy")
+    }
+}

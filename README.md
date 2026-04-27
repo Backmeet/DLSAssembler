@@ -1,2 +1,2 @@
 # DLSAssembler
-A Assembler for nerd too tired to write their own, and for the community of DLS
+A Assembler for nerds too tired to write their own, and for the community of DLS

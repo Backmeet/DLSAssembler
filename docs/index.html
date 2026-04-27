@@ -52,18 +52,23 @@
 
         <h2>Output</h2>
 
-        <select id="outputMode">
-            <option value="binary8">binary8</option>
-            <option value="binary16">binary16</option>
-            <option value="hex2">hex2</option>
-            <option value="hex4">hex4</option>
-            <option value="unsigned8">unsigned8</option>
-            <option value="signed8">signed8</option>
-            <option value="unsigned16">unsigned16</option>
-            <option value="signed16">signed16</option>
-        </select>
+        <div class="output-controls">
+            <select id="outputMode">
+                <option value="binary8">binary8</option>
+                <option value="binary16">binary16</option>
+                <option value="hex2">hex2</option>
+                <option value="hex4">hex4</option>
+                <option value="unsigned8">unsigned8</option>
+                <option value="signed8">signed8</option>
+                <option value="unsigned16">unsigned16</option>
+                <option value="signed16">signed16</option>
+            </select>
+        </div>
 
-        <textarea id="outputBox" readonly></textarea>
+        <div class="output-box-wrapper">
+            <button id="copyBtn">Copy</button>
+            <textarea id="outputBox" readonly></textarea>
+        </div>
 
     </div>
 

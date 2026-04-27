@@ -139,3 +139,46 @@ body {
 ::-webkit-scrollbar { width:10px; }
 ::-webkit-scrollbar-track { background:#444; }
 ::-webkit-scrollbar-thumb { background:transparent; }
+
+.output-controls {
+    margin-bottom:8px;
+}
+
+.output-box-wrapper {
+    position:relative;
+    flex:1;
+    display:flex;
+}
+
+#outputBox {
+    flex:1;
+    background:#0d1117;
+    color:#7ee787;
+    border:1px solid #30363d;
+    resize:none;
+    padding:12px;
+    font-family:monospace;
+}
+
+#copyBtn {
+    position:absolute;
+    top:8px;
+    right:8px;
+    background:#21262d;
+    border:1px solid #30363d;
+    color:#c9d1d9;
+    font-size:12px;
+    padding:4px 10px;
+    cursor:pointer;
+    border-radius:6px;
+}
+
+#copyBtn:hover {
+    background:#30363d;
+}
+
+#copyBtn.copied {
+    background:#238636;
+    border-color:#2ea043;
+    color:white;
+}
