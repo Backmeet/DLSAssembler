@@ -482,7 +482,7 @@ function emitFormatted(token, pushByte, lineIndex, instructions, labels) {
 
     while (bytes.length < numBytes) bytes.unshift(0)
 
-    for (let i = numBytes; i != 0; i--) {
+    for (let i = numBytes - 1; i != -1; i--) {
         pushByte(bytes[i])
     }
 
