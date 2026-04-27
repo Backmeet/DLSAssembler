@@ -150,16 +150,6 @@ body {
     display:flex;
 }
 
-#outputBox {
-    flex:1;
-    background:#0d1117;
-    color:#7ee787;
-    border:1px solid #30363d;
-    resize:none;
-    padding:12px;
-    font-family:monospace;
-}
-
 #copyBtn {
     position:absolute;
     top:8px;
