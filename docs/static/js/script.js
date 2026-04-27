@@ -38,7 +38,7 @@ function formatOutput(bytes, mode) {
     if (mode === "binary16") {
         const a = ensureEven([...bytes])
         for (let i = 0; i < a.length; i += 2) {
-            const v = (a[i] << 8) | a[i + 1]
+            const v = (a[i + 1] << 8) | a[i]
             out.push(v.toString(2).padStart(16, "0"))
         }
         return out.join("\n")
@@ -51,7 +51,7 @@ function formatOutput(bytes, mode) {
     if (mode === "hex4") {
         const a = ensureEven([...bytes])
         for (let i = 0; i < a.length; i += 2) {
-            const v = (a[i] << 8) | a[i + 1]
+            const v = (a[i + 1] << 8) | a[i]
             out.push("0x" + v.toString(16).padStart(4, "0"))
         }
         return out.join("\n")
@@ -68,7 +68,7 @@ function formatOutput(bytes, mode) {
     if (mode === "unsigned16") {
         const a = ensureEven([...bytes])
         for (let i = 0; i < a.length; i += 2) {
-            out.push(((a[i] << 8) | a[i + 1]) >>> 0)
+            out.push(((a[i + 1] << 8) | a[i]) >>> 0)
         }
         return out.join("\n")
     }
@@ -76,7 +76,7 @@ function formatOutput(bytes, mode) {
     if (mode === "signed16") {
         const a = ensureEven([...bytes])
         for (let i = 0; i < a.length; i += 2) {
-            out.push(toSigned((a[i] << 8) | a[i + 1], 16))
+            out.push(toSigned((a[i + 1] << 8) | a[i], 16))
         }
         return out.join("\n")
     }
