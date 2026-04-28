@@ -316,164 +316,9 @@ require(["vs/editor/editor.main"], function () {
         {
             value:
 `{
-    "size": 32,
+    "size": 16,
     "lowBitLast": true,
     "formats": [ 
-        { "fmt": "0000000yyyppppppzzz0000000000000",
-            "rules": [ 
-                { "names": [
-                    "ADDrr",
-                    "ADCrr",
-                    "SUBrr",
-                    "ANDrr",
-                    "ORrr",
-                    "XORrr",
-                    "MOVrr"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }, 
-                        { "fmt": "y" },
-                        { "fmt": "z" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "0000000yyyppppppiiiiiiiiiiiiiiii",
-            "rules": [ 
-                { "names": [
-                    "ADDri",
-                    "ADCri",
-                    "SUBri",
-                    "ANDri",
-                    "ORri",
-                    "XORri",
-                    "MOVri"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }, 
-                        { "fmt": "y" },
-                        { "fmt": "i" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "0000000yyypppppp0000000000000000",
-            "rules": [ 
-                { "names": [
-                    "NOTr",
-                    "SHLr",
-                    "SHRr",
-                    "ROLr",
-                    "RORr"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }, 
-                        { "fmt": "y" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "0000000yyyppppppiiiiiiiiiiiiiiii",
-            "rules": [ 
-                { "names": [
-                    "NOTri"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }, 
-                        { "fmt": "y" },
-                        { "fmt": "i" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "aaaa000pyyypppppaaaaaaaaaaaaaaaa",
-            "rules": [ 
-                { "names": [
-                    "MOVar"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }, 
-                        { "fmt": "a" },
-                        { "fmt": "y" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "aaaa000pyyypppppaaaaaaaaaaaaaaaa",
-            "rules": [ 
-                { "names": [
-                    "MOVra",
-                    "ADDra",
-                    "ADCra",
-                    "SUBra",
-                    "ANDra",
-                    "ORra",
-                    "XORra",
-                    "CMPra",
-                    "NORra"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }, 
-                        { "fmt": "y" },
-                        { "fmt": "a" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "aaaa000000ppppppaaaaaaaaaaaaaaaa",
-            "rules": [ 
-                { "names": [
-                    "JZ",
-                    "JC",
-                    "JN",
-                    "JNZ",
-                    "JNC",
-                    "JI",
-                    "JNI",
-                    "SIH",
-                    "NMI",
-                    "IRQ"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }, 
-                        { "fmt": "a" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "0000000000pppppp0000000000000000",
-            "rules": [ 
-                { "names": [
-                    "SZF",
-                    "CZF",
-                    "SCF",
-                    "SIF",
-                    "CIF",
-                    "RET",
-                    "SOM",
-                    "COM",
-                    "SOE",
-                    "COE"
-                    ],
-                "mapping":[
-                        { "fmt": "p" }
-                    ]
-                }
-            ] 
-        },
-        { "fmt": "0000000pzzzppppp0000000000000000",
-            "rules": [ 
-                { "names": [
-                    "PUSH",
-                    "POP"
-                    ],
-                "mapping":[
-                        { "fmt": "p" },
-                        { "fmt": "z" }
-                    ]
-                }
-            ] 
-        }
     ]   
 }`,
             language: "json",
@@ -1066,7 +911,8 @@ saveBtn.onclick = function(){
 
     const data = {
         program: editor.getValue(),
-        instructions: getInstructionDefs()
+        instructions: getInstructionDefs(),
+        fmt: ruleEditor.getValue()
     }
 
     localStorage.setItem(
@@ -1089,6 +935,10 @@ loadBtn.onclick = function(){
 
     if(data.program!==undefined){
         editor.setValue(data.program)
+    }
+
+    if (data.fmt !== undefined) {
+        ruleEditor.setValue(data.fmt)
     }
 
     if(Array.isArray(data.instructions)){
