@@ -912,7 +912,8 @@ saveBtn.onclick = function(){
     const data = {
         program: editor.getValue(),
         instructions: getInstructionDefs(),
-        fmt: ruleEditor.getValue()
+        fmt: rulesEditor.getValue(),
+        useFmt: document.getElementById("rulesEnable").checked
     }
 
     localStorage.setItem(
@@ -938,7 +939,11 @@ loadBtn.onclick = function(){
     }
 
     if (data.fmt !== undefined) {
-        ruleEditor.setValue(data.fmt)
+        rulesEditor.setValue(data.fmt)
+    }
+
+    if (data.useFmt !== undefined) {
+        document.getElementById("rulesEnable").checked = data.useFmt
     }
 
     if(Array.isArray(data.instructions)){
