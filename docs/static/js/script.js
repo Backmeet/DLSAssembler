@@ -1025,3 +1025,7 @@ copyBtn.onclick = async () => {
         document.execCommand("copy")
     }
 }
+
+document.getElementById("rulesEnable").addEventListener("change", function() {
+    assemble()
+})
