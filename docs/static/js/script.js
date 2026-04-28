@@ -1,3 +1,21 @@
+function switchTab(id) {
+    document.querySelectorAll(".tabbtn").forEach(b=>{
+        b.classList.remove("active")
+    })
+
+    document.querySelectorAll(".tabcontent").forEach(c=>{
+        c.classList.remove("active")
+    })
+
+    document.querySelector('[data-tab="'+id+'"]').classList.add("active")
+    document.getElementById(id).classList.add("active")
+}
+
+document.querySelectorAll(".tabbtn").forEach(btn=>{
+    btn.onclick=()=>switchTab(btn.dataset.tab)
+})
+
+
 function toSigned(v, bits) {
     const m = 1 << (bits - 1)
     return v & m ? v - (1 << bits) : v
@@ -23,7 +41,6 @@ function parseNumber(v, i) {
 }
 
 function formatOutput(bytes, mode) {
-
     function ensureEven(arr) {
         if (arr.length % 2 !== 0) arr.push(0)
         return arr
@@ -84,8 +101,7 @@ function formatOutput(bytes, mode) {
     return ""
 }
 
-function updateOutput(bytes, error, msg) {
-    if (!error) {
+function updateOutput(bytes, error, msg) {    if (!error) {
         const mode = document.getElementById("outputMode").value
         document.getElementById("outputBox").value = formatOutput(bytes, mode)
     } else {
@@ -94,6 +110,7 @@ function updateOutput(bytes, error, msg) {
 }
 
 let editor
+let ruleEditor
 
 require.config({
     paths: {
@@ -117,7 +134,7 @@ function refreshInstructionCache() {
 }
 
 require(["vs/editor/editor.main"], function () {
-
+    
     monaco.languages.register({ id: "asmcustom" })
 
     class State {
@@ -293,6 +310,180 @@ require(["vs/editor/editor.main"], function () {
             "editor.background": "#1e1e1e"
         }
     })
+
+    rulesEditor = monaco.editor.create(
+        document.getElementById("rulesEditor"),
+        {
+            value:
+`{
+    "size": 32,
+    "lowBitLast": true,
+    "formats": [ 
+        { "fmt": "0000000yyyppppppzzz0000000000000",
+            "rules": [ 
+                { "names": [
+                    "ADDrr",
+                    "ADCrr",
+                    "SUBrr",
+                    "ANDrr",
+                    "ORrr",
+                    "XORrr",
+                    "MOVrr"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }, 
+                        { "fmt": "y" },
+                        { "fmt": "z" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "0000000yyyppppppiiiiiiiiiiiiiiii",
+            "rules": [ 
+                { "names": [
+                    "ADDri",
+                    "ADCri",
+                    "SUBri",
+                    "ANDri",
+                    "ORri",
+                    "XORri",
+                    "MOVri"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }, 
+                        { "fmt": "y" },
+                        { "fmt": "i" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "0000000yyypppppp0000000000000000",
+            "rules": [ 
+                { "names": [
+                    "NOTr",
+                    "SHLr",
+                    "SHRr",
+                    "ROLr",
+                    "RORr"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }, 
+                        { "fmt": "y" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "0000000yyyppppppiiiiiiiiiiiiiiii",
+            "rules": [ 
+                { "names": [
+                    "NOTri"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }, 
+                        { "fmt": "y" },
+                        { "fmt": "i" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "aaaa000pyyypppppaaaaaaaaaaaaaaaa",
+            "rules": [ 
+                { "names": [
+                    "MOVar"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }, 
+                        { "fmt": "a" },
+                        { "fmt": "y" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "aaaa000pyyypppppaaaaaaaaaaaaaaaa",
+            "rules": [ 
+                { "names": [
+                    "MOVra",
+                    "ADDra",
+                    "ADCra",
+                    "SUBra",
+                    "ANDra",
+                    "ORra",
+                    "XORra",
+                    "CMPra",
+                    "NORra"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }, 
+                        { "fmt": "y" },
+                        { "fmt": "a" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "aaaa000000ppppppaaaaaaaaaaaaaaaa",
+            "rules": [ 
+                { "names": [
+                    "JZ",
+                    "JC",
+                    "JN",
+                    "JNZ",
+                    "JNC",
+                    "JI",
+                    "JNI",
+                    "SIH",
+                    "NMI",
+                    "IRQ"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }, 
+                        { "fmt": "a" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "0000000000pppppp0000000000000000",
+            "rules": [ 
+                { "names": [
+                    "SZF",
+                    "CZF",
+                    "SCF",
+                    "SIF",
+                    "CIF",
+                    "RET",
+                    "SOM",
+                    "COM",
+                    "SOE",
+                    "COE"
+                    ],
+                "mapping":[
+                        { "fmt": "p" }
+                    ]
+                }
+            ] 
+        },
+        { "fmt": "0000000pzzzppppp0000000000000000",
+            "rules": [ 
+                { "names": [
+                    "PUSH",
+                    "POP"
+                    ],
+                "mapping":[
+                        { "fmt": "p" },
+                        { "fmt": "z" }
+                    ]
+                }
+            ] 
+        }
+    ]   
+}`,
+            language: "json",
+            theme: "vs-dark",
+            automaticLayout: true,
+            fontSize: 16,
+            lineHeight: 24,
+            minimap: {enabled: false}
+        }
+    )
 
     editor = monaco.editor.create(
         document.getElementById("editor"),
@@ -504,30 +695,149 @@ function assemble() {
 
     function pushByte(v) {
         v &= 0xFF
-
         if (romSize !== null && output.length >= romSize) {
             overflow = true
             return
         }
-
         output.push(v)
         pc++
     }
 
     function fillTo(addr) {
-        while (pc < addr) {
-            pushByte(0)
+        while (pc < addr) pushByte(0)
+    }
+
+    let rules = null
+    let ruleMap = {}
+
+    if (document.getElementById("rulesEnable").checked) {
+        try {
+            rules = JSON.parse(rulesEditor.getValue())
+
+            for (const f of rules.formats || []) {
+                for (const r of f.rules || []) {
+
+                    for (const name of r.names || []) {
+
+                        if (instructions[name] === undefined) continue
+
+                        if (ruleMap[name] !== undefined) {
+                            updateOutput([], true, "Format conflict for instruction: " + name)
+                            return
+                        }
+
+                        ruleMap[name] = {
+                            fmt: f.fmt,
+                            mapping: r.mapping
+                        }
+                    }
+                }
+            }
+
+        } catch (e) {
+            updateOutput([], true, "Rule JSON parse error")
+            return
         }
     }
 
-    /* FIRST PASS */
+    function resolveValue(v, lineIndex) {
+
+        let visited = new Set()
+        let cur = v
+
+        while (true) {
+
+            if (visited.has(cur)) {
+                numberParseError = true
+                numberParseErrorLine = lineIndex
+                return 0
+            }
+
+            visited.add(cur)
+
+            if (labels[cur] !== undefined) return labels[cur]
+
+            const n = parseNumber(cur, lineIndex)
+            if (!Number.isNaN(n)) return n
+
+            const next = instructions[cur]
+            if (next === undefined) return 0
+
+            cur = next
+        }
+    }
+
+    function encodeInstruction(name, operands, lineIndex) {
+
+        const spec = ruleMap[name]
+        if (!spec) return false
+
+        let fmt = spec.fmt.split("")
+        const mapping = spec.mapping
+
+        if (operands.length < mapping.length) {
+            updateOutput([], true, "Operand mismatch at line " + (lineIndex + 1))
+            return true
+        }
+
+        for (let m = 0; m < mapping.length; m++) {
+
+            const letter = mapping[m].fmt
+            const value = resolveValue(operands[m], lineIndex)
+
+            let bits = (value >>> 0).toString(2)
+
+            if (rules.lowBitLast) bits = bits.split("").reverse().join("")
+
+            for (let b = 0; b < bits.length; b++) {
+
+                const bit = bits[b]
+
+                let idx = -1
+                for (let i = fmt.length - 1; i >= 0; i--) {
+                    if (fmt[i] === letter) {
+                        idx = i
+                        break
+                    }
+                }
+
+                if (idx === -1) break
+
+                fmt[idx] = bit
+            }
+        }
+
+        for (let idx = 0; idx < fmt.length; idx++) {
+            if (fmt[idx] !== "0" & fmt[idx] !== "1") {
+                fmt[idx] = "0"
+            }
+        }
+
+        const finalBits = fmt.join("")
+
+        const size = rules.size || finalBits.length
+
+        if (finalBits.length !== size) {
+            updateOutput([], true, "Format size mismatch")
+            return true
+        }
+
+        for (let i = size; i > 0; i -= 8) {
+            const byte = finalBits.slice(Math.max(0, i - 8), i)
+            pushByte(parseInt(byte, 2))
+        }
+
+        return true
+    }
+
     pc = 0
 
     for (let i = 0; i < program.length; i++) {
+
         let l = program[i].trim()
         if (!l) continue
 
-        const parts = l.match(/\[[^\]]*\]|\S+/g) || []
+        const parts = l.split(";")[0].match(/\[[^\]]*\]|\S+/g) || []
         const head = parts[0]
 
         if (head.endsWith(":")) {
@@ -542,34 +852,24 @@ function assemble() {
 
         if (head === ".org") {
             const target = parseNumber(parts[1], i)
-            if (!Number.isNaN(target)) {
-                pc = target
-            }
+            if (!Number.isNaN(target)) pc = target
             continue
         }
 
         if (head === ".string" || head === ".stringz") {
-            const str = l.slice(l.indexOf(parts[1]))
-                .replace(/^['"]|['"]$/g, "")
-
+            const str = l.slice(l.indexOf(parts[1])).replace(/^['"]|['"]$/g, "")
             pc += str.length + (head === ".stringz" ? 1 : 0)
             continue
         }
 
         if (head === ".array") {
-
             for (let j = 1; j < parts.length; j++) {
-
                 const t = parts[j]
-
                 if (t.startsWith("[") && t.endsWith("]")) {
-
                     const inner = t.slice(1, -1).split(",")
                     if (inner.length === 2) {
-
                         const fmt = inner[0].trim()
                         const bIndex = fmt.indexOf("b")
-
                         if (bIndex !== -1) {
                             let bits = parseNumber(fmt.slice(0, bIndex), i)
                             while (bits % 8 !== 0) bits++
@@ -578,69 +878,44 @@ function assemble() {
                         }
                     }
                 }
-
                 pc += 1
             }
-
             continue
         }
 
-        if (instructions[head] === undefined) continue
-
-        pc += 1
-
-        for (let j = 1; j < parts.length; j++) {
-
-            const t = parts[j]
-
-            if (t.startsWith("[") && t.endsWith("]")) {
-
-                const inner = t.slice(1, -1).split(",")
-                if (inner.length === 2) {
-
-                    const fmt = inner[0].trim()
-                    const bIndex = fmt.indexOf("b")
-
-                    if (bIndex !== -1) {
-                        let bits = parseNumber(fmt.slice(0, bIndex), i)
-                        while (bits % 8 !== 0) bits++
-                        pc += bits / 8
-                        continue
-                    }
-                }
-            }
-
-            pc += 1
+        if (ruleMap[head]) {
+            pc += (rules.size || 32) / 8
+            continue
         }
+
+        if (instructions[head] !== undefined) pc += 1
     }
 
-    /* reset for second pass */
     pc = 0
 
-    /* SECOND PASS */
     for (let i = 0; i < program.length; i++) {
+
         let l = program[i].trim()
         if (!l) continue
 
-        const parts = l.match(/\[[^\]]*\]|\S+/g) || []
+        const parts = l.split(";")[0].match(/\[[^\]]*\]|\S+/g) || []
         const head = parts[0]
 
         if (head.endsWith(":")) continue
 
-        if (head === ".romsize") continue
+        if (head === ".romsize") {
+            romSize = parseNumber(parts[1], i)
+            continue
+        }
 
         if (head === ".org") {
             const target = parseNumber(parts[1], i)
-            if (!Number.isNaN(target)) {
-                fillTo(target)
-            }
+            if (!Number.isNaN(target)) fillTo(target)
             continue
         }
 
         if (head === ".string" || head === ".stringz") {
-            const str = l.slice(l.indexOf(parts[1]))
-                .replace(/^['"]|['"]$/g, "")
-
+            const str = l.slice(l.indexOf(parts[1])).replace(/^['"]|['"]$/g, "")
             for (const c of str) pushByte(c.charCodeAt(0))
             if (head === ".stringz") pushByte(0)
             continue
@@ -648,56 +923,32 @@ function assemble() {
 
         if (head === ".array") {
             for (let j = 1; j < parts.length; j++) {
-
                 const t = parts[j]
-
-                if (emitFormatted(t, pushByte, i, instructions, labels)) continue
-
-                pushByte(parseNumber(t, i))
+                if (!emitFormatted(t, pushByte, i, instructions, labels)) {
+                    pushByte(resolveValue(t, i))
+                }
             }
             continue
         }
 
-        for (let j = 0; j < parts.length; j++) {
+        if (encodeInstruction(head, parts, i)) continue // skip if spec is given
 
+        for (let j = 0; j < parts.length; j++) {
             const a = parts[j]
 
-            if (resolveOpcode(a, instructions, i, pushByte, labels)) {
-                continue
-            }
+            if (resolveOpcode(a, instructions, i, pushByte, labels)) continue
 
             if (emitFormatted(a, pushByte, i, instructions, labels)) continue
-
             if (labels[a] !== undefined) {
                 pushByte(labels[a])
                 continue
             }
-
-            const n = parseNumber(a, i)
+            const n = parseNumber(a, i) 
             if (!Number.isNaN(n)) pushByte(n)
         }
     }
 
-    /* ROM SIZE FINALIZATION */
-    if (romSize !== null) {
-        while (output.length < romSize) {
-            output.push(0)
-        }
-
-        if (output.length > romSize) {
-            overflow = true
-        }
-    }
-
-    let error = ""
-    if (overflow) {
-        error += "Error: Exceeded memory flow, (your program is bigger than .romsize tells)"
-    } else if (numberParseError) {
-        error += "Error: A invalid number @" + toString(numberParseErrorLine) 
-    }
-
-
-    updateOutput(output, overflow || numberParseError, error)
+    updateOutput(output, overflow, "ROM overflow")
 }
 
 const outputMode = document.getElementById("outputMode")

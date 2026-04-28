@@ -6,75 +6,102 @@
     <title>Assembler</title>
 
     <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-    <link rel="stylesheet" href="static/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 
 <body>
 
-<div class="container">
+    <div class="tabbar">
+        <div class="tabbtn active" data-tab="programTab">Program</div>
+        <div class="tabbtn" data-tab="rulesTab">Assembler rules</div>
+    </div>
 
-    <div class="panel instructions">
+    <!-- PROGRAM TAB -->
 
-        <h2>Instruction Definitions</h2>
+    <div id="programTab" class="tabcontent active">
+        <div class="container">
 
-        <ul id="instructionList" class="instruction-list"></ul>
+            <div class="panel instructions">
 
-        <div class="add-row">
-            <input id="nameBox" placeholder="name" style="font-size: 37px">
-            <input id="numberBox" placeholder="number" style="font-size: 36px">
-            <button id="addInstruction">ADD</button>
+                <h2>Instruction Definitions</h2>
+
+                <ul id="instructionList" class="instruction-list"></ul>
+
+                <div class="add-row">
+                    <input id="nameBox" placeholder="name" style="font-size:37px">
+                    <input id="numberBox" placeholder="number" style="font-size:36px">
+                    <button id="addInstruction">ADD</button>
+                </div>
+
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="panel program">
+
+                <h2>Program</h2>
+
+                <div class="program-controls">
+                    <button id="clearBtn">clear</button>
+                    <input id="save_name" placeholder="save name">
+                    <button id="saveBtn">save</button>
+                    <select id="load_dropdown"></select>
+                    <button id="loadBtn">load</button>
+                </div>
+
+                <div id="editor"></div>
+
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="panel output">
+
+                <h2>Output</h2>
+
+                <div class="output-controls">
+                    <select id="outputMode">
+                        <option value="binary8">binary8</option>
+                        <option value="binary16">binary16</option>
+                        <option value="hex2">hex2</option>
+                        <option value="hex4">hex4</option>
+                        <option value="unsigned8">unsigned8</option>
+                        <option value="signed8">signed8</option>
+                        <option value="unsigned16">unsigned16</option>
+                        <option value="signed16">signed16</option>
+                    </select>
+                </div>
+
+                <div class="output-box-wrapper">
+                    <button id="copyBtn">Copy</button>
+                    <textarea id="outputBox" readonly></textarea>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- RULES TAB -->
+
+    <div id="rulesTab" class="tabcontent">
+
+        <div class="rules-container">
+
+            <div class="rules-top">
+                <label>Enable rules</label>
+                <input type="checkbox" id="rulesEnable">
+            </div>
+
+            <div id="rulesEditor"></div>
+
         </div>
 
     </div>
 
-    <div class="separator"></div>
-
-    <div class="panel program">
-
-        <h2>Program</h2>
-
-        <div class="program-controls">
-            <button id="clearBtn">clear</button>
-            <input id="save_name" placeholder="save name">
-            <button id="saveBtn">save</button>
-            <select id="load_dropdown"></select>
-            <button id="loadBtn">load</button>
-        </div>
-
-        <div id="editor"></div>
-
-    </div>
-
-    <div class="separator"></div>
-
-    <div class="panel output">
-
-        <h2>Output</h2>
-
-        <div class="output-controls">
-            <select id="outputMode">
-                <option value="binary8">binary8</option>
-                <option value="binary16">binary16</option>
-                <option value="hex2">hex2</option>
-                <option value="hex4">hex4</option>
-                <option value="unsigned8">unsigned8</option>
-                <option value="signed8">signed8</option>
-                <option value="unsigned16">unsigned16</option>
-                <option value="signed16">signed16</option>
-            </select>
-        </div>
-
-        <div class="output-box-wrapper">
-            <button id="copyBtn">Copy</button>
-            <textarea id="outputBox" readonly></textarea>
-        </div>
-
-    </div>
-
-</div>
-
-<script src="static/js/script.js"></script>
+    <script src="static/js/script.js"></script>
 
 </body>
 </html>

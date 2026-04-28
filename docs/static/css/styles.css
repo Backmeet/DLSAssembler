@@ -1,65 +1,87 @@
-body {
+
+body{
     margin:0;
     background:#1e1e1e;
     color:#e0e0e0;
     font-family:monospace;
-}
-
-.container {
-    display:flex;
     height:100vh;
-    width:100vw;
+    display:flex;
+    flex-direction:column;
 }
 
-.panel {
+/* tab bar */
+
+.tabbar{
+    display:flex;
+    background:#252526;
+    border-bottom:1px solid #444;
+}
+
+.tabbtn{
+    padding:10px 20px;
+    cursor:pointer;
+    border-right:1px solid #444;
+    background:#252526;
+}
+
+.tabbtn.active{
+    background:#1e1e1e;
+}
+
+/* tab content */
+
+.tabcontent{
+    flex:1;
+    display:none;
+}
+
+.tabcontent.active{
+    display:flex;
+}
+
+/* program container */
+
+.container{
+    display:flex;
+    height:100%;
+    width:100%;
+}
+
+.panel{
     display:flex;
     flex-direction:column;
     padding:10px;
     min-width:0;
+    height: 100vh;
 }
 
-.instructions {
+.instructions{
     flex:0 0 25%;
     max-width:320px;
 }
 
-.program {
+.program{
     flex:1;
 }
 
-.output {
+.output{
     flex:0 0 25%;
     max-width:360px;
 }
 
-.separator {
+.separator{
     width:2px;
     background:#444;
 }
 
-#editor {
+#editor{
     flex:1;
     border:1px solid #444;
 }
 
-.output select {
-    background:#111;
-    color:white;
-    border:1px solid #444;
-    padding:4px;
-    margin-bottom:8px;
-}
+/* instruction panel */
 
-#outputBox {
-    flex:1;
-    background:#111;
-    color:#0f0;
-    border:1px solid #444;
-    resize:none;
-    padding:8px;
-}
-
-.instruction-list {
+.instruction-list{
     list-style:none;
     padding:0;
     margin:0;
@@ -67,7 +89,7 @@ body {
     overflow:auto;
 }
 
-.instruction-list li {
+.instruction-list li{
     display:flex;
     justify-content:space-between;
     padding:6px;
@@ -75,7 +97,7 @@ body {
     font-size:large;
 }
 
-.remove-btn {
+.remove-btn{
     background:rgb(255,100,100);
     border:none;
     width:28px;
@@ -84,35 +106,37 @@ body {
     font-weight:bold;
 }
 
-.add-row {
-    display: flex;
-    width: 100%;
-    height: 6%;
-    gap: 6px;
-    box-sizing: border-box;
+.add-row{
+    display:flex;
+    width:100%;
+    height:6%;
+    gap:6px;
+    box-sizing:border-box;
 }
 
-.add-row input {
-    width: 40%;
-    height: 100%;
-    background: #111;
-    border: 1px solid #444;
-    color: white;
-    padding: 6px;
-    font-family: monospace;
-    box-sizing: border-box;
+.add-row input{
+    width:40%;
+    height:100%;
+    background:#111;
+    border:1px solid #444;
+    color:white;
+    padding:6px;
+    font-family:monospace;
+    box-sizing:border-box;
 }
 
-#addInstruction {
-    width: 20%;
-    height: 100%;
-    background: rgb(100,255,100);
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
+#addInstruction{
+    width:20%;
+    height:100%;
+    background:rgb(100,255,100);
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-.program-controls {
+/* program controls */
+
+.program-controls{
     display:flex;
     gap:6px;
     margin-bottom:8px;
@@ -120,7 +144,7 @@ body {
 }
 
 .program-controls input,
-.program-controls select {
+.program-controls select{
     background:#111;
     border:1px solid #444;
     color:white;
@@ -128,7 +152,7 @@ body {
     padding:4px;
 }
 
-.program-controls button {
+.program-controls button{
     background:#333;
     border:1px solid #555;
     color:white;
@@ -136,21 +160,35 @@ body {
     padding:4px 10px;
 }
 
-::-webkit-scrollbar { width:10px; }
-::-webkit-scrollbar-track { background:#444; }
-::-webkit-scrollbar-thumb { background:transparent; }
+/* output */
 
-.output-controls {
+.output-controls{
     margin-bottom:8px;
 }
 
-.output-box-wrapper {
+.output select{
+    background:#111;
+    color:white;
+    border:1px solid #444;
+    padding:4px;
+}
+
+.output-box-wrapper{
     position:relative;
     flex:1;
     display:flex;
 }
 
-#copyBtn {
+#outputBox{
+    flex:1;
+    background:#111;
+    color:#0f0;
+    border:1px solid #444;
+    resize:none;
+    padding:8px;
+}
+
+#copyBtn{
     position:absolute;
     top:8px;
     right:8px;
@@ -163,12 +201,37 @@ body {
     border-radius:6px;
 }
 
-#copyBtn:hover {
+#copyBtn:hover{
     background:#30363d;
 }
 
-#copyBtn.copied {
+#copyBtn.copied{
     background:#238636;
     border-color:#2ea043;
     color:white;
 }
+
+/* assembler rules */
+
+.rules-container{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    padding:10px;
+    gap:10px;
+}
+
+.rules-top{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+#rulesEditor{
+    flex:1;
+    border:1px solid #444;
+}
+
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:#444;}
+::-webkit-scrollbar-thumb{background:transparent;}
